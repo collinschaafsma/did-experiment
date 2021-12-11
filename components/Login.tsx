@@ -1,7 +1,8 @@
+import { FC } from 'react'
 import { Center, Button } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 
-const Login = () => {
+const Login: FC = () => {
   const doLogin = async () => {
     //eslint-disable-next-line
     const metamask = window.ethereum
