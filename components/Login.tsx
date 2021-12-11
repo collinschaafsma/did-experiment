@@ -1,9 +1,17 @@
-import { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Center, Button } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 
-const Login: FC = () => {
+interface LoginProps {
+  setAddress(arg: string): void; 
+}
+
+const Login: FC<LoginProps> = ({ setAddress }) => {
+  const [loading, setLoading] = useState(false)
+  const [btnVisible, setBtnVisible] = useState(true)
+
   const doLogin = async () => {
+    setLoading(true);
     //eslint-disable-next-line
     const metamask = window.ethereum
     
@@ -20,15 +28,31 @@ const Login: FC = () => {
 
     let ens: string | null = await provider.lookupAddress(address)
 
-    if (ens) console.log(ens)
+    if (ens) {
+      setAddress(ens)
+    } else {
+      setAddress(address)
+    }
 
+    setBtnVisible(false)
   }
 
   return (
     <Center paddingTop='40px'>
-      <Button size='lg' border='2px' onClick={ () => doLogin() }>
-        Login with Ethereum
-      </Button>
+      {
+        btnVisible && (
+          <Button 
+            size='lg' 
+            border='2px' 
+            isLoading={loading}
+            loadingText='Connecting'
+            spinnerPlacement='end'
+            onClick={ () => doLogin() }
+          >
+            Login with Ethereum
+          </Button>
+        )
+      }
     </Center>
   )
 }
