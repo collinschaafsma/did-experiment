@@ -25,7 +25,7 @@ const Login = () => {
 
   return (
     <Center paddingTop='40px'>
-      <Button size='lg' border='2px' onClick={doLogin}>
+      <Button size='lg' border='2px' onClick={ () => doLogin() }>
         Login with Ethereum
       </Button>
     </Center>
