@@ -34,6 +34,9 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
       setAddress(address)
     }
 
+    const nonce = await fetch('/api/nonce', { credentials: 'include' }).then((res) => res.text());
+    console.log(nonce)
+
     setBtnVisible(false)
   }
 
