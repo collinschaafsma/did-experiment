@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react'
 import { Center, Button } from '@chakra-ui/react'
 import { ethers } from 'ethers'
+import { SiweMessage, SignatureType } from 'siwe'
 
 interface LoginProps {
   setAddress(arg: string): void; 
@@ -34,8 +35,34 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
       setAddress(address)
     }
 
-    const nonce = await fetch('/api/nonce', { credentials: 'include' }).then((res) => res.text());
+    const nonce = await fetch('/api/nonce', { 
+      credentials: 'include' 
+    }).then((res) => res.text());
     console.log(nonce)
+
+    const { chainId } = await provider.getNetwork()
+    console.log(chainId)
+
+    const message = new SiweMessage({
+      domain: document.location.host,
+      address,
+      chainId: String(chainId),
+      uri: document.location.origin,
+      version: '1',
+      statement: 'DID Experiment sig',
+      type: SignatureType.PERSONAL_SIGNATURE,
+      nonce,
+    })
+
+    const signature = await fetch('/api/signature', {
+      method: 'POST',
+      body: JSON.stringify({ message }),
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    }).then((res) => res.text());
+
+    message.signature = await provider.getSigner().signMessage(signature)
+    console.log(signature)
 
     setBtnVisible(false)
   }
