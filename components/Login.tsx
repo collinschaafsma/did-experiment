@@ -1,7 +1,14 @@
 import React, { FC, useState } from 'react'
 import { Center, Button } from '@chakra-ui/react'
 import { ethers } from 'ethers'
-//import { SiweMessage, SignatureType } from 'siwe'
+import { SiweMessage, SignatureType } from 'siwe'
+
+declare global {
+  interface Window {
+      ethereum: { request: (opt: { method: string }) => Promise<Array<string>> };
+      web3: unknown;
+  }
+}
 
 interface LoginProps {
   setAddress(arg: string): void; 
@@ -26,15 +33,8 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
     const [address] = await provider.listAccounts()
 
     if (!address) throw Error('No address')
-
     let ens: string | null = await provider.lookupAddress(address)
-
-    if (ens) {
-      setAddress(ens)
-    } else {
-      setAddress(address)
-    }
-
+    
     const nonce = await fetch('/api/nonce', { 
       credentials: 'include' 
     }).then((res) => res.text());
@@ -43,28 +43,40 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
     const { chainId } = await provider.getNetwork()
     console.log(chainId)
 
-    // const message = new SiweMessage({
-    //   domain: document.location.host,
-    //   address,
-    //   chainId: String(chainId),
-    //   uri: document.location.origin,
-    //   version: '1',
-    //   statement: 'DID Experiment sig',
-    //   type: SignatureType.PERSONAL_SIGNATURE,
-    //   nonce,
-    // })
+    const message = new SiweMessage({
+      domain: document.location.host,
+      address,
+      chainId: String(chainId),
+      uri: document.location.origin,
+      version: '1',
+      statement: 'DID Experiment sig',
+      type: SignatureType.PERSONAL_SIGNATURE,
+      nonce,
+    })
 
-    // const signature = await fetch('/api/signature', {
-    //   method: 'POST',
-    //   body: JSON.stringify({ message }),
-    //   headers: { 'Content-Type': 'application/json' },
-    //   credentials: 'include',
-    // }).then((res) => res.text());
+    message.signature = await provider.getSigner().signMessage(message.signMessage())
+    console.log(message.signature)
 
-    // message.signature = await provider.getSigner().signMessage(signature)
-    // console.log(signature)
+    const loginResponse = await fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({ ens, message }),
+      headers: { 'Content-Type': 'application/json', },
+      credentials: 'include',
+    })
+    console.log(loginResponse.json())
 
-    setBtnVisible(false)
+    if(loginResponse.status === 200) {
+      if(ens) {
+        setAddress(ens as string)
+      } else {
+        setAddress(address)
+      }
+      setBtnVisible(false)
+    } else {
+      console.log(loginResponse.json())
+    }
+
+    setLoading(false)
   }
 
   return (
