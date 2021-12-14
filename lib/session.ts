@@ -11,7 +11,7 @@ export const sessionOptions: IronSessionOptions = {
 
 declare module 'iron-session' {
   interface IronSessionData {
-    nonce: string
+    nonce: string | null
     siwe: SiweMessage
     ens: string
   }

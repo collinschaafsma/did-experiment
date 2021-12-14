@@ -73,7 +73,7 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
       }
       setBtnVisible(false)
     } else {
-      console.log(loginResponse.json())
+      console.log(loginResponse)
     }
 
     setLoading(false)
