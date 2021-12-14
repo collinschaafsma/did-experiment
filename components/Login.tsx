@@ -5,13 +5,13 @@ import { SiweMessage, SignatureType } from 'siwe'
 
 declare global {
   interface Window {
-      ethereum: { request: (opt: { method: string }) => Promise<Array<string>> };
-      web3: unknown;
+      ethereum: { request: (opt: { method: string }) => Promise<Array<string>> }
+      web3: unknown
   }
 }
 
 interface LoginProps {
-  setAddress(arg: string): void; 
+  setAddress(arg: string): void 
 }
 
 const Login: FC<LoginProps> = ({ setAddress }) => {
