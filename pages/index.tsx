@@ -2,10 +2,18 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Login from '../components/Login'
 import { Heading } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import useUser from '../lib/useUser'
 
 const Home: NextPage = () => {
+  const { user } = useUser()
   const [address, setAddress] = useState('Anon')
+
+  useEffect(() => {
+    if(user?.loggedIn) {
+      setAddress(user.address)
+    }
+  },[user?.loggedIn, user?.address])
 
   return (
     <div>
@@ -15,7 +23,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Heading>Hello {address}</Heading>
-      <Login setAddress={setAddress}></Login>
+      {user?.loggedIn ? (
+        <pre>{JSON.stringify(user, null, 2)}</pre>
+       ) : (
+        <Login setAddress={setAddress}></Login>
+       )}
     </div>
   )
 }

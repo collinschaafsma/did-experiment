@@ -10,19 +10,19 @@ const handler = async (
   let user: User
   if(req.session.siwe) {
      user = {
-      loggedId: true,
+      loggedIn: true,
       address: req.session.siwe.address,
       ens: req.session.ens,
     }
   } else {
     user = {
-      loggedId: false,
+      loggedIn: false,
       address: '',
       ens: '',
     }
   }
 
-  res.json({ user })
+  res.json({ ...user })
 }
 
 export default withIronSessionApiRoute(handler, sessionOptions)

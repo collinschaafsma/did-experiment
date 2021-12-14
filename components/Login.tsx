@@ -38,10 +38,8 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
     const nonce = await fetch('/api/nonce', { 
       credentials: 'include' 
     }).then((res) => res.text());
-    console.log(nonce)
 
     const { chainId } = await provider.getNetwork()
-    console.log(chainId)
 
     const message = new SiweMessage({
       domain: document.location.host,
@@ -55,7 +53,6 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
     })
 
     message.signature = await provider.getSigner().signMessage(message.signMessage())
-    console.log(message.signature)
 
     const loginResponse = await fetch('/api/login', {
       method: 'POST',
@@ -63,7 +60,6 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
       headers: { 'Content-Type': 'application/json', },
       credentials: 'include',
     })
-    console.log(loginResponse.json())
 
     if(loginResponse.status === 200) {
       if(ens) {

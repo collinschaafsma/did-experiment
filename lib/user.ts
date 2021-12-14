@@ -1,5 +1,5 @@
 export interface User {
-  loggedId: boolean
+  loggedIn: boolean
   ens: string
   address: string
 }
