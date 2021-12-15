@@ -3,7 +3,6 @@ import { Button, Center } from '@chakra-ui/react'
 import Router from 'next/router'
 
 const Logout: FC = () => {
-
   const doLogout = async () => {
     await fetch('/api/logout', { 
       credentials: 'include' 
