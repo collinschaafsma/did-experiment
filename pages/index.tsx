@@ -4,6 +4,7 @@ import Login from '../components/Login'
 import { Heading } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import useUser from '../lib/useUser'
+import Logout from '../components/Logout'
 
 const Home: NextPage = () => {
   const { user } = useUser()
@@ -24,7 +25,10 @@ const Home: NextPage = () => {
       </Head>
       <Heading>Hello {address}</Heading>
       {user?.loggedIn ? (
-        <pre>{JSON.stringify(user, null, 2)}</pre>
+        <>
+          <pre>{JSON.stringify(user, null, 2)}</pre>
+          <Logout />
+        </>
        ) : (
         <Login setAddress={setAddress}></Login>
        )}

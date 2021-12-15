@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react'
 import { Center, Button } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { SiweMessage, SignatureType } from 'siwe'
+import Router from 'next/router'
 
 declare global {
   interface Window {
@@ -73,6 +74,8 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
     }
 
     setLoading(false)
+
+    Router.reload()
   }
 
   return (
