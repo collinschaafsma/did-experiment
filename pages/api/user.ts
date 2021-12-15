@@ -5,7 +5,7 @@ import { User } from '../../lib/user'
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<User>
 ) => {
   let user: User
   if(req.session.siwe) {
