@@ -30,7 +30,7 @@ const Home: NextPage = () => {
           <Logout />
         </>
        ) : (
-        <Login setAddress={setAddress}></Login>
+        <Login statement='DID Experiment Sign'/>
        )}
     </div>
   )

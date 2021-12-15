@@ -12,10 +12,10 @@ declare global {
 }
 
 interface LoginProps {
-  setAddress(arg: string): void 
+  statement: string
 }
 
-const Login: FC<LoginProps> = ({ setAddress }) => {
+const Login: FC<LoginProps> = ({ statement }) => {
   const [loading, setLoading] = useState(false)
   const [btnVisible, setBtnVisible] = useState(true)
 
@@ -48,7 +48,7 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
       chainId: String(chainId),
       uri: document.location.origin,
       version: '1',
-      statement: 'DID Experiment sig',
+      statement: statement,
       type: SignatureType.PERSONAL_SIGNATURE,
       nonce,
     })
@@ -63,17 +63,11 @@ const Login: FC<LoginProps> = ({ setAddress }) => {
     })
 
     if(loginResponse.status === 200) {
-      if(ens) {
-        setAddress(ens as string)
-      } else {
-        setAddress(address)
-      }
+      setLoading(false)
       setBtnVisible(false)
     } else {
       console.log(loginResponse)
     }
-
-    setLoading(false)
 
     Router.reload()
   }
