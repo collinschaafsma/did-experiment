@@ -1,3 +1,8 @@
+Sign in with Ethereum using siwe and iron-session in a next.js app. Heavily inspired by the siwe notebook example. Have fun!
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
