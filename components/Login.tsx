@@ -6,8 +6,8 @@ import Router from 'next/router'
 
 declare global {
   interface Window {
-      ethereum: { request: (opt: { method: string }) => Promise<Array<string>> }
-      web3: unknown
+    ethereum: { request: (opt: { method: string }) => Promise<Array<string>> }
+    web3: unknown
   }
 }
 
@@ -20,10 +20,10 @@ const Login: FC<LoginProps> = ({ statement }) => {
   const [btnVisible, setBtnVisible] = useState(true)
 
   const doLogin = async () => {
-    setLoading(true);
+    setLoading(true)
     //eslint-disable-next-line
     const metamask = window.ethereum
-    
+
     if (typeof metamask === undefined) throw Error('No metamask')
 
     await metamask.request({
@@ -35,10 +35,10 @@ const Login: FC<LoginProps> = ({ statement }) => {
 
     if (!address) throw Error('No address')
     let ens: string | null = await provider.lookupAddress(address)
-    
-    const nonce = await fetch('/api/nonce', { 
-      credentials: 'include' 
-    }).then((res) => res.text());
+
+    const nonce = await fetch('/api/nonce', {
+      credentials: 'include',
+    }).then((res) => res.text())
 
     const { chainId } = await provider.getNetwork()
 
@@ -58,11 +58,11 @@ const Login: FC<LoginProps> = ({ statement }) => {
     const loginResponse = await fetch('/api/login', {
       method: 'POST',
       body: JSON.stringify({ ens, message }),
-      headers: { 'Content-Type': 'application/json', },
+      headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     })
 
-    if(loginResponse.status === 200) {
+    if (loginResponse.status === 200) {
       setLoading(false)
       setBtnVisible(false)
     } else {
@@ -73,21 +73,19 @@ const Login: FC<LoginProps> = ({ statement }) => {
   }
 
   return (
-    <Center paddingTop='40px'>
-      {
-        btnVisible && (
-          <Button 
-            size='lg' 
-            border='2px' 
-            isLoading={loading}
-            loadingText='Connecting'
-            spinnerPlacement='end'
-            onClick={ () => doLogin() }
-          >
-            Login with Ethereum
-          </Button>
-        )
-      }
+    <Center paddingTop="40px">
+      {btnVisible && (
+        <Button
+          size="lg"
+          border="2px"
+          isLoading={loading}
+          loadingText="Connecting"
+          spinnerPlacement="end"
+          onClick={() => doLogin()}
+        >
+          Login with Ethereum
+        </Button>
+      )}
     </Center>
   )
 }

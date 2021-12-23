@@ -11,10 +11,10 @@ const Home: NextPage = () => {
   const [address, setAddress] = useState('Anon')
 
   useEffect(() => {
-    if(user?.loggedIn) {
+    if (user?.loggedIn) {
       setAddress(user.address)
     }
-  },[user?.loggedIn, user?.address])
+  }, [user?.loggedIn, user?.address])
 
   return (
     <div>
@@ -29,9 +29,9 @@ const Home: NextPage = () => {
           <pre>{JSON.stringify(user, null, 2)}</pre>
           <Logout />
         </>
-       ) : (
-        <Login statement='DID Experiment Sign'/>
-       )}
+      ) : (
+        <Login statement="DID Experiment Sign" />
+      )}
     </div>
   )
 }

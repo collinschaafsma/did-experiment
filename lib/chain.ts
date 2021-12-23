@@ -1,6 +1,6 @@
 export const chainUrl = (chainId: string) => {
   const infuraKey = process.env.INFURA_PROJECT_ID
-  switch(Number.parseInt(chainId)) {
+  switch (Number.parseInt(chainId)) {
     case 1:
       return `https://mainnet.infura.io/v3/${infuraKey}`
     case 3:

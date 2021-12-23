@@ -9,15 +9,13 @@ const fetcher = async () => {
   return response.json()
 }
 
-const useUser = ({
-  redirectTo = ''
-} = {}) => {
+const useUser = ({ redirectTo = '' } = {}) => {
   const { data: user } = useSWR<User>(userPath, fetcher)
 
   useEffect(() => {
-    if(!redirectTo || !user) return
+    if (!redirectTo || !user) return
 
-    if(redirectTo && !user?.loggedIn) {
+    if (redirectTo && !user?.loggedIn) {
       Router.push(redirectTo)
     }
   }, [user, redirectTo])
